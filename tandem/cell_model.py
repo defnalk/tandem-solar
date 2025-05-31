@@ -21,10 +21,10 @@ Reference:
     De Soto et al. (2006), Solar Energy — five-parameter SDM
 """
 
-import numpy as np
-from scipy.optimize import brentq, curve_fit
 from dataclasses import dataclass, field
 
+import numpy as np
+from scipy.optimize import brentq, curve_fit
 
 # ── Physical constants ─────────────────────────────────────────────────────────
 K_B = 1.380649e-23   # J/K  Boltzmann constant

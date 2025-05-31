@@ -26,9 +26,9 @@ shading       : Partial shading and bypass diode response
 """
 
 from .cell_model import SolarCell, fit_iv_parameters
-from .tandem     import TandemModule
-from .ctm_loss   import CTMLossAnalyser
-from .shading    import ShadingAnalysis
+from .ctm_loss import CTMLossAnalyser
+from .shading import ShadingAnalysis
+from .tandem import TandemModule
 
 __all__ = [
     "SolarCell",

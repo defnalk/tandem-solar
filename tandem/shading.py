@@ -19,8 +19,8 @@ Reference: Devoto et al. (2024), EU PVSEC 2BV.1.41
 """
 
 import numpy as np
-from .cell_model import SolarCell, CellParameters, SILICON_PARAMS, PEROVSKITE_PARAMS
 
+from .cell_model import PEROVSKITE_PARAMS, SILICON_PARAMS, CellParameters, SolarCell
 
 # ── Breakdown voltage parameters ───────────────────────────────────────────────
 VBD_PEROVSKITE = -3.0   # V  (typical; range −1 to −5 V)

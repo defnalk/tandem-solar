@@ -22,9 +22,11 @@ Reference: SERIS NUS internship project — cell-to-module loss evaluation
            for next-generation tandem solar technology (Summer 2025)
 """
 
-import numpy as np
 from dataclasses import dataclass, field
-from .cell_model import SolarCell, CellParameters, SILICON_PARAMS, PEROVSKITE_PARAMS
+
+import numpy as np
+
+from .cell_model import PEROVSKITE_PARAMS, SILICON_PARAMS, CellParameters, SolarCell
 
 
 @dataclass

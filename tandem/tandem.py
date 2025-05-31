@@ -27,7 +27,8 @@ with two cells in series to simulate a "perovskite" sub-cell (Voc ≈ 1.30 V).
 """
 
 import numpy as np
-from .cell_model import SolarCell, CellParameters, SILICON_PARAMS, PEROVSKITE_PARAMS
+
+from .cell_model import PEROVSKITE_PARAMS, SILICON_PARAMS, CellParameters, SolarCell
 
 
 class TandemModule:
