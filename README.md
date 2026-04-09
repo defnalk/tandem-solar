@@ -1,5 +1,7 @@
 # tandem-solar
 
+[![CI](https://github.com/defnalk/tandem-solar/actions/workflows/ci.yml/badge.svg)](https://github.com/defnalk/tandem-solar/actions/workflows/ci.yml)
+
 Python simulation toolkit for perovskite-silicon tandem solar cell modules. Covers I-V modelling, terminal configurations (2T/3T/4T), cell-to-module (CTM) loss analysis, and bypass diode protection under partial shading.
 
 Based on work at the **Solar Energy Research Institute of Singapore (SERIS), NUS** — internship project on cell-to-module loss evaluation for next-generation tandem solar technology (Summer 2025).
