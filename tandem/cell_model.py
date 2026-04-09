@@ -22,6 +22,7 @@ Reference:
 """
 
 from dataclasses import dataclass, field
+from math import exp as _math_exp
 
 import numpy as np
 from scipy.optimize import brentq, curve_fit
@@ -182,11 +183,38 @@ class SolarCell:
         V, I, P : np.ndarray
             Voltage (V), current (A), power (W) arrays.
         """
-        V = np.linspace(0, self.p.Voc * 1.01, n_points)
-        I = np.array([self.current(v, G=G) for v in V])
-        I = np.maximum(I, 0)
-        P = V * I
-        return V, I, P
+        # Resolve all CellParameters scalars once (each @property call would
+        # otherwise recompute np.exp on every voltage point — ~400x overhead).
+        p = self.p
+        Iph = p.Iph * (G / 1000.0)
+        I0 = p.I0
+        Rs = p.Rs
+        Rsh = p.Rsh
+        nVt = p.n * p.Vt
+        I_hi = Iph * 1.05
+
+        V = np.linspace(0, p.Voc * 1.01, n_points)
+        I_out = np.empty(n_points)
+
+        # Scalar-only closure: math.exp is ~10x faster than np.exp on Python
+        # floats because it skips the ufunc/array dispatch entirely.
+        for k in range(n_points):
+            v = float(V[k])
+
+            def f(I, v=v, Iph=Iph, I0=I0, Rs=Rs, Rsh=Rsh, nVt=nVt):
+                arg = (v + I * Rs) / nVt
+                if arg > 80.0:
+                    arg = 80.0
+                return Iph - I0 * (_math_exp(arg) - 1.0) - (v + I * Rs) / Rsh - I
+
+            try:
+                I_out[k] = brentq(f, -0.1, I_hi, xtol=1e-9)
+            except ValueError:
+                I_out[k] = 0.0
+
+        I_out = np.maximum(I_out, 0)
+        P = V * I_out
+        return V, I_out, P
 
     def mpp(self, G: float = 1000.0) -> tuple[float, float, float]:
         """
