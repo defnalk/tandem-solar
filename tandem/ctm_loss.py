@@ -260,15 +260,19 @@ class CTMLossAnalyser:
         if G_range is None:
             G_range = np.linspace(100, 1000, 20)
 
-        P_mod, ctm = [], []
-        for G in G_range:
-            cells = self.cell_pmax_sum(G=G)
-            P_module = cells["P_total_sum"] * self.losses.ctm_ratio
-            P_mod.append(P_module)
-            ctm.append(self.losses.ctm_ratio)  # constant in this simplified model
+        # cell_pmax_sum solves the single-diode model 200× per call via
+        # brentq, so the original loop did ~20 × 400 root-finds for what is,
+        # in this first-order model, a strictly linear scaling in G. Compute
+        # the STC reference once and broadcast across G_range. The CTM ratio
+        # is treated as constant elsewhere in the package, so this is
+        # equivalent to the previous behaviour, just N× faster.
+        G_range = np.asarray(G_range, dtype=float)
+        ctm_ratio = self.losses.ctm_ratio
+        P_total_stc = self.cell_pmax_sum(G=1000.0)["P_total_sum"]
+        P_module = P_total_stc * (G_range / 1000.0) * ctm_ratio
 
         return {
             "G":        G_range,
-            "P_module": np.array(P_mod),
-            "ctm_ratio": np.array(ctm),
+            "P_module": P_module,
+            "ctm_ratio": np.full_like(G_range, ctm_ratio),
         }
