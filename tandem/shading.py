@@ -129,6 +129,7 @@ class ShadingAnalysis:
         else:
             # Shaded cell limits string: power ≈ 48% of STC (from paper)
             Pmpp = P_stc * 0.48
+            n_active = self.n_cells
 
         V_reverse_shaded = (n_cells_under_bpd - 1) * Voc_tandem if n_cells_under_bpd > 0 else (
             (self.n_cells - 1) * Voc_tandem
@@ -136,9 +137,14 @@ class ShadingAnalysis:
         is_breakdown_pero = V_reverse_shaded > abs(self.Vbd_top)
         is_breakdown_si   = V_reverse_shaded > abs(self.Vbd_bottom)
 
+        # String Vmpp is the per-tandem-cell Vmpp times the number of active
+        # (non-bypassed) cells in series, NOT Pmpp/Isc — that ratio has units
+        # of resistance and is not a voltage.
+        Vmpp_string = (self.top.p.Vmpp + self.bottom.p.Vmpp) * max(n_active, 0)
+
         return {
             "Pmpp":             round(max(Pmpp, 0), 2),
-            "Vmpp":             round(Pmpp / self.top.p.Isc if self.top.p.Isc > 0 else 0, 2),
+            "Vmpp":             round(Vmpp_string, 2),
             "Impp":             round(self.top.p.Isc, 3),
             "bpd_active":       bpd_active,
             "breakdown_pero":   bool(is_breakdown_pero),
