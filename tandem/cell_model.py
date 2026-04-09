@@ -21,11 +21,14 @@ Reference:
     De Soto et al. (2006), Solar Energy — five-parameter SDM
 """
 
+import logging
 from dataclasses import dataclass, field
 from math import exp as _math_exp
 
 import numpy as np
 from scipy.optimize import brentq, curve_fit
+
+logger = logging.getLogger(__name__)
 
 # ── Physical constants ─────────────────────────────────────────────────────────
 K_B = 1.380649e-23   # J/K  Boltzmann constant
@@ -128,7 +131,12 @@ class SolarCell:
     """
 
     def __init__(self, params: CellParameters = SILICON_PARAMS):
+        if not isinstance(params, CellParameters):
+            raise TypeError(
+                f"params must be a CellParameters instance (got {type(params).__name__})"
+            )
         self.p = params
+        logger.debug("SolarCell initialised: %s", params)
 
     def current(self, V: float, G: float = 1000.0) -> float:
         """
@@ -149,6 +157,8 @@ class SolarCell:
         float
             Cell current I (A). Returns 0 if solver fails.
         """
+        if G < 0:
+            raise ValueError(f"irradiance G must be >= 0 W/m^2 (got {G})")
         p = self.p
         Iph = p.Iph * (G / 1000.0)
         I0  = p.I0
