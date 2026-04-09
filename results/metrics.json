@@ -1,0 +1,74 @@
+{
+  "config": "config/default.yaml",
+  "module": {
+    "n_cells": 11,
+    "n_cells_ctm": 11,
+    "n_cells_shading": 22
+  },
+  "iv": {
+    "Pmpp_2T_W": 26.794193199590545,
+    "Pmpp_4T_W": 41.10716721297361
+  },
+  "config_comparison": {
+    "2T": {
+      "Pmpp_W": 26.794193199590545,
+      "rel_eff": 0.6518131755655052
+    },
+    "3T-r": {
+      "Pmpp_W": 37.32370519562467,
+      "rel_eff": 0.9079610132766613
+    },
+    "3T-s": {
+      "Pmpp_W": 29.858964156499738,
+      "rel_eff": 0.7263688106213292
+    },
+    "4T": {
+      "Pmpp_W": 41.10716721297361,
+      "rel_eff": 1.0
+    }
+  },
+  "ctm": {
+    "ctm_ratio": 0.912,
+    "total_loss_pct": 8.8,
+    "P_cell_sum_W": 82.2143,
+    "P_module_W": 74.9795,
+    "losses_pct": {
+      "Optical: reflection": 2.0,
+      "Optical: encapsulant": 1.5,
+      "Optical: interconnect": 2.5,
+      "Resistive: interconnect": 1.0,
+      "Resistive: busbar": 0.8,
+      "Mismatch: Isc": 1.5,
+      "Mismatch: Voc": 0.5,
+      "Optical gain (texturing)": -1.0
+    }
+  },
+  "shading": {
+    "P_stc_W": 48.57,
+    "P_shaded_no_bpd_W": 23.31,
+    "P_mpp_per_bpd_W": [
+      23.31,
+      46.36,
+      41.95,
+      35.32,
+      28.7,
+      23.31,
+      23.31,
+      23.31,
+      23.31,
+      23.31
+    ],
+    "n_cells_bpd": [
+      0,
+      1,
+      3,
+      6,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ]
+  }
+}
