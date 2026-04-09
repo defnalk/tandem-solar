@@ -109,13 +109,19 @@ class TandemModule:
         """Maximum power point for 2T configuration."""
         V, I, P = self.iv_2T(G=G)
         idx = P.argmax()
+        # Voc is the voltage at which current first falls to ~0 (end of curve),
+        # not the first voltage at which current is non-zero (start of curve).
+        below = np.where(I < 0.001)[0]
+        Voc = float(V[below[0]]) if below.size else float(V[-1])
+        Isc = float(I[0])
+        FF = float(P[idx] / (Voc * Isc)) if Voc > 0 and Isc > 0 else 0.0
         return {
             "Vmpp": float(V[idx]),
             "Impp": float(I[idx]),
             "Pmpp": float(P[idx]),
-            "Voc":  float(V[I > 0.001][0]) if (I > 0.001).any() else 0,
-            "Isc":  float(I[0]),
-            "FF":   float(P[idx] / (V[I < 0.001][-1] * I[0])) if I[0] > 0 else 0,
+            "Voc":  Voc,
+            "Isc":  Isc,
+            "FF":   FF,
         }
 
     # ── 4T: Mechanically stacked, independent sub-cells ──────────────────────

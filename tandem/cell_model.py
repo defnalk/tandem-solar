@@ -263,9 +263,24 @@ def fit_iv_parameters(
     CellParameters
         Fitted parameters.
     """
-    # Extract key points
+    # Extract key points.
+    # Isc: current at V=0 — V_meas is assumed monotonically increasing,
+    # so np.interp is well-defined.
     Isc = float(np.interp(0, V_meas, I_meas))
-    Voc = float(np.interp(0, I_meas[::-1], V_meas[::-1]))
+
+    # Voc: voltage where current crosses zero. np.interp requires xp to be
+    # monotonically increasing; reversing I_meas does not guarantee that
+    # (real measurements are noisy near Voc and can dip below zero earlier
+    # in the sweep). Locate the first downward zero-crossing of I_meas and
+    # linearly interpolate locally.
+    sign_change = np.where(np.diff(np.sign(I_meas)) < 0)[0]
+    if sign_change.size:
+        i = int(sign_change[0])
+        I0_, I1_ = I_meas[i], I_meas[i + 1]
+        V0_, V1_ = V_meas[i], V_meas[i + 1]
+        Voc = float(V0_ - I0_ * (V1_ - V0_) / (I1_ - I0_)) if I1_ != I0_ else float(V0_)
+    else:
+        Voc = float(V_meas[-1])
 
     P = V_meas * I_meas
     idx_mpp = P.argmax()
