@@ -219,10 +219,13 @@ class CTMLossAnalyser:
         ctm_ratios = []
         Isc_mean = self.bottom.p.Isc
 
+        # Seed once outside the loop. Re-creating the RNG with the same seed
+        # for every sigma re-uses an identical underlying draw, so the only
+        # thing varying across the sweep is the scale factor — that masks
+        # the genuine MC noise and biases the worst-case minimum estimator.
+        rng = np.random.default_rng(42)
+        n_mc = 1000
         for sigma in sigma_Isc_range:
-            # Monte Carlo: 1000 random strings
-            rng = np.random.default_rng(42)
-            n_mc = 1000
             Isc_cells = rng.normal(Isc_mean, sigma * Isc_mean,
                                    size=(n_mc, self.n_cells_series))
             # 2T string current = min(Isc) in series string
