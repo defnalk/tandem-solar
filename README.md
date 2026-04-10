@@ -2,9 +2,9 @@
 
 [![CI](https://github.com/defnalk/tandem-solar/actions/workflows/ci.yml/badge.svg)](https://github.com/defnalk/tandem-solar/actions/workflows/ci.yml)
 
-Python simulation toolkit for perovskite-silicon tandem solar cell modules. Covers I-V modelling, terminal configurations (2T/3T/4T), cell-to-module (CTM) loss analysis, and bypass diode protection under partial shading.
+Python simulation toolkit for perovskite silicon tandem solar cell modules. Covers I V modelling, terminal configurations (2T/3T/4T), cell to module (CTM) loss analysis, and bypass diode protection under partial shading.
 
-Based on work at the **Solar Energy Research Institute of Singapore (SERIS), NUS** — internship project on cell-to-module loss evaluation for next-generation tandem solar technology (Summer 2025).
+Based on work at the **Solar Energy Research Institute of Singapore (SERIS), NUS**, internship project on cell to module loss evaluation for next generation tandem solar technology (Summer 2025).
 
 Related publication:
 > Devoto et al. (2024). *Modelling the effects of tandem module circuit configurations.* 41st EU PVSEC. [doi:10.4229/EUPVSEC2024/2BV.1.41](https://doi.org/10.4229/EUPVSEC2024/2BV.1.41)
@@ -30,8 +30,8 @@ Terminal configurations:
 
 | Module | Contents |
 |---|---|
-| `cell_model.py` | Single-diode model (SDM): I-V curves, parameter extraction, temperature/irradiance scaling |
-| `tandem.py` | 2T, 3T-r, 3T-s, 4T configuration models; end-loss analysis |
+| `cell_model.py` | Single diode model (SDM): I V curves, parameter extraction, temperature/irradiance scaling |
+| `tandem.py` | 2T, 3T r, 3T s, 4T configuration models; end loss analysis |
 | `ctm_loss.py` | CTM loss waterfall: optical, resistive, mismatch; Isc mismatch Monte Carlo |
 | `shading.py` | Partial shading + bypass diode sweep, reproducing Devoto et al. Fig. 8 |
 
@@ -79,15 +79,15 @@ sweep = sa.bypass_diode_sweep()
 python examples/full_simulation.py
 ```
 
-Generates a 4-panel figure:
+Generates a 4 panel figure:
 
 ![Tandem Simulation Results](examples/tandem_simulation_results.png)
 
 **Panels:**
-- **A** — Normalised I-V and P-V curves for perovskite and silicon sub-cells
-- **B** — Configuration comparison: 2T / 3T-r / 3T-s / 4T Pmpp (11-cell string)
-- **C** — CTM loss waterfall — 8.8% total loss, CTM ratio = 0.912
-- **D** — Bypass diode sweep (reproducing Devoto et al. Fig. 8)
+- **A**: Normalised I V and P V curves for perovskite and silicon sub cells
+- **B**: Configuration comparison: 2T / 3T r / 3T s / 4T Pmpp (11 cell string)
+- **C**: CTM loss waterfall, 8.8% total loss, CTM ratio = 0.912
+- **D**: Bypass diode sweep (reproducing Devoto et al. Fig. 8)
 
 ## Running Tests
 
@@ -101,7 +101,7 @@ python -m pytest tests/ -v
 
 ## Physics Background
 
-### Single-Diode Model
+### Single Diode Model
 
 The standard SDM describes cell current implicitly:
 
@@ -115,9 +115,9 @@ Solved numerically using Brent's method at each voltage point.
 
 | Config | Matching | End losses | Key property |
 |---|---|---|---|
-| **2T** | Current-matched | None | Simplest; current mismatch penalising |
-| **3T-r** | Voltage-matched | Low (1 cell) | Better than 3T-s; BPD works like 2T |
-| **3T-s** | Voltage-matched | High (3 cells) | No effective BPD implementation known |
+| **2T** | Current matched | None | Simplest; current mismatch penalising |
+| **3T r** | Voltage matched | Low (1 cell) | Better than 3T s; BPD works like 2T |
+| **3T s** | Voltage matched | High (3 cells) | No effective BPD implementation known |
 | **4T** | Independent | None | Best efficiency; highest cost |
 
 ### CTM Loss Mechanisms
@@ -138,7 +138,7 @@ Cell Pmax sum (100%)
 
 ### Bypass Diode Protection (reproducing Devoto et al. 2024)
 
-In a 22-cell 2T string with one shaded cell:
+In a 22 cell 2T string with one shaded cell:
 
 | Cells under BPD | Power | vs STC |
 |---|---|---|
@@ -152,20 +152,20 @@ Key finding: one bypass diode can protect up to **9 tandem cells** in this modul
 
 ### Perovskite Stability Challenge
 
-Perovskite sub-cells have breakdown voltage Vbd ≈ −1 to −5 V — far lower than silicon PERC (Vbd > −20 V). This means:
+Perovskite sub cells have breakdown voltage Vbd ≈ −1 to −5 V, far lower than silicon PERC (Vbd > −20 V). This means:
 - Standard bypass diode placement (1 per 20 cells) is **insufficient** for tandems
-- IBC silicon's soft breakdown (Vbd ≈ −3.7 V) that benefits single-junction modules becomes a **disadvantage** in 3T tandem bottom cells
-- 3T-s has no known effective bypass diode solution
+- IBC silicon's soft breakdown (Vbd ≈ −3.7 V) that benefits single junction modules becomes a **disadvantage** in 3T tandem bottom cells
+- 3T s has no known effective bypass diode solution
 
 ## References
 
 - Devoto et al. (2024). Modelling the effects of tandem module circuit configurations. *41st EU PVSEC.* doi: 10.4229/EUPVSEC2024/2BV.1.41
-- McMahon et al. (2021). Homogenous voltage-matched strings using three-terminal tandem solar cells. *IEEE J. Photovolt.*
+- McMahon et al. (2021). Homogenous voltage matched strings using three terminal tandem solar cells. *IEEE J. Photovolt.*
 - Chu et al. (2015). Soft breakdown behavior of IBC silicon solar cells. *Energy Procedia.*
 - Di Girolamo et al. (2024). Silicon/perovskite tandem solar cells with reverse bias stability down to −40 V. *Adv. Sci.*
 
 ## Author
 
-**Defne Ertugrul** — MEng Chemical Engineering, Imperial College London  
+**Defne Ertugrul**, MEng Chemical Engineering, Imperial College London  
 Research internship: SERIS (Solar Energy Research Institute of Singapore), NUS, July 2025  
-Supervisor: Dr. Romika Sharma — Next Generation Industrial Solar Cells and Modules Cluster
+Supervisor: Dr. Romika Sharma, Next Generation Industrial Solar Cells and Modules Cluster
