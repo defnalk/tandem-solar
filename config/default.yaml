@@ -1,0 +1,19 @@
+# Reproducibility config for tandem-solar.
+# Run: python -m tandem.cli --config config/default.yaml
+
+module:
+  n_cells: 11           # cells in the series string for IV / config comparison
+  n_cells_ctm: 11       # cells used by CTM loss analyser
+  n_cells_shading: 22   # cells used by the shading / bypass-diode sweep
+
+run:
+  iv_curves: true              # panel A: per-cell + 2T/4T tandem IV
+  config_comparison: true      # panel B: 2T / 3T-r / 3T-s / 4T Pmpp
+  ctm_loss: true               # panel C: cell-to-module loss waterfall
+  bypass_diode_sweep: true     # panel D: 1-cell shading + BPD sweep
+
+output:
+  results_dir: results
+  figure_name: tandem_simulation_results.png
+  metrics_name: metrics.json
+  random_seed: 0

@@ -73,6 +73,27 @@ sa = ShadingAnalysis(n_cells=22)
 sweep = sa.bypass_diode_sweep()
 ```
 
+## Reproduce the Published Result (one command)
+
+All key parameters live in [`config/default.yaml`](config/default.yaml). To
+reproduce the figure and metrics in [`results/`](results/) from a fresh clone:
+
+```bash
+git clone https://github.com/defnalk/tandem-solar.git
+cd tandem-solar
+pip install -r requirements.txt
+python -m tandem.cli --config config/default.yaml
+```
+
+Outputs:
+
+- `results/metrics.json` — IV / config-comparison Pmpp, CTM ratio + loss breakdown, bypass-diode sweep
+- `results/tandem_simulation_results.png` — 4-panel summary figure
+
+To explore variations, copy `config/default.yaml`, edit any parameter
+(string length, CTM cell count, shading layout, run flags), and pass the new
+file via `--config`. No code changes required.
+
 ## Run the Full Simulation
 
 ```bash
